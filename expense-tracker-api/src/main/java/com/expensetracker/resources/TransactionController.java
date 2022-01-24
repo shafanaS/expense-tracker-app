@@ -29,7 +29,7 @@ public class TransactionController {
         return new ResponseEntity<>(transactions, HttpStatus.OK);
     }
 
-    @PostMapping("/newTranscation")
+    @PostMapping("/newTransaction")
     public ResponseEntity<Integer> addTransaction(@RequestBody Transaction transaction) {
         int transactionId = transactionService.addTransaction(transaction);
         return new ResponseEntity<Integer>(transactionId, HttpStatus.CREATED);
