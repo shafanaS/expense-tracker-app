@@ -1,6 +1,8 @@
 package com.expensetracker.resources;
 
 import com.expensetracker.domain.Transaction;
+import com.expensetracker.exceptions.BadRequestException;
+import com.expensetracker.exceptions.ResourceNotFoundException;
 import com.expensetracker.repositories.TransactionRepositoryImpl;
 import com.expensetracker.services.TransactionService;
 import com.expensetracker.services.TransactionServiceImpl;
@@ -30,20 +32,32 @@ public class TransactionController {
     }
 
     @PostMapping("/newTransaction")
-    public ResponseEntity<Integer> addTransaction(@RequestBody Transaction transaction) {
-        int transactionId = transactionService.addTransaction(transaction);
-        return new ResponseEntity<Integer>(transactionId, HttpStatus.CREATED);
+    public ResponseEntity<?> addTransaction(@RequestBody Transaction transaction) {
+        try {
+            int transactionId = transactionService.addTransaction(transaction);
+            return new ResponseEntity<>(transactionId, HttpStatus.CREATED);
+        } catch (BadRequestException e) {
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("/updateTransaction/{transactionId}")
     public ResponseEntity<?> updateTransaction(@RequestBody Transaction transaction, @PathVariable("transactionId") int transactionId) {
-        transactionService.updateTransaction(transactionId, transaction);
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            transactionService.updateTransaction(transactionId, transaction);
+            return new ResponseEntity<>("Success", HttpStatus.OK);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
-    @DeleteMapping("/{transactionId}")
+    @DeleteMapping("deleteTransaction/{transactionId}")
     public ResponseEntity<?> deleteTransaction(@PathVariable("transactionId") int transactionId) {
-        transactionService.removeTransaction(transactionId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            transactionService.removeTransaction(transactionId);
+            return new ResponseEntity<>("Success", HttpStatus.OK);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 }

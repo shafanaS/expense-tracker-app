@@ -1,7 +1,6 @@
 package com.expensetracker.services;
 
 import com.expensetracker.domain.Budget;
-import com.expensetracker.domain.Category;
 import com.expensetracker.domain.MonthlyBudget;
 import com.expensetracker.exceptions.BadRequestException;
 

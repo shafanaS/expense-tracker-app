@@ -2,6 +2,7 @@ package com.expensetracker.resources;
 
 import com.expensetracker.domain.Budget;
 import com.expensetracker.domain.MonthlyBudget;
+import com.expensetracker.exceptions.BadRequestException;
 import com.expensetracker.repositories.BudgetRepositoryImpl;
 import com.expensetracker.services.BudgetService;
 import com.expensetracker.services.BudgetServiceImpl;
@@ -31,8 +32,12 @@ public class BudgetController {
     }
 
     @PostMapping("/newBudget")
-    public ResponseEntity<Budget> addBudget(@RequestBody Budget budget) {
-        Budget newBudget = budgetService.addBudget(budget);
-        return new ResponseEntity<Budget>(newBudget, HttpStatus.CREATED);
+    public ResponseEntity<?> addBudget(@RequestBody Budget budget) {
+        try {
+            Budget newBudget = budgetService.addBudget(budget);
+            return new ResponseEntity<>(newBudget, HttpStatus.CREATED);
+        } catch (BadRequestException e) {
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
     }
 }

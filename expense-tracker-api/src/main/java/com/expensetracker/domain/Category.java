@@ -2,11 +2,13 @@ package com.expensetracker.domain;
 
 import com.expensetracker.repositories.CategoryRepositoryImpl;
 import com.expensetracker.util.Util;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Category {
 
     private int categoryId;
     private String categoryName;
+    @JsonProperty("isCustom")
     private boolean isCustom;
 
     public Category(String categoryName, boolean isCustom ) {

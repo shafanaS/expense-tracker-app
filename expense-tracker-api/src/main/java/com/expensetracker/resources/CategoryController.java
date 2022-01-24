@@ -1,6 +1,7 @@
 package com.expensetracker.resources;
 
 import com.expensetracker.domain.Category;
+import com.expensetracker.exceptions.BadRequestException;
 import com.expensetracker.exceptions.ResourceNotFoundException;
 import com.expensetracker.repositories.CategoryRepositoryImpl;
 import com.expensetracker.services.CategoryService;
@@ -25,15 +26,19 @@ public class CategoryController {
     }
 
     @GetMapping("/getCategories")
-    public ResponseEntity<List<Category>> getAllCategories() {
+    public ResponseEntity<?> getAllCategories() {
         List<Category> categories = categoryService.fetchAllCategories();
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
     @PostMapping("/newCategory")
-    public ResponseEntity<Integer> addCategory(@RequestBody Category category) {
-        int categoryId = categoryService.addCategory(category.getCategoryName());
-        return new ResponseEntity<Integer>(categoryId, HttpStatus.CREATED);
+    public ResponseEntity<?> addCategory(@RequestBody Category category) {
+        try {
+            int categoryId = categoryService.addCategory(category.getCategoryName());
+            return new ResponseEntity<>(categoryId, HttpStatus.CREATED);
+        } catch (BadRequestException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping("/deleteCategory/{categoryId}")
