@@ -1,7 +1,6 @@
 package com.expensetracker.util;
 
 public enum Month {
-
     JANUARY,
     FEBRUARY,
     MARCH,

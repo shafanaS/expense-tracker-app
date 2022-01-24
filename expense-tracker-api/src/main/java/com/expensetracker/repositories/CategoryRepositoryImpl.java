@@ -22,9 +22,9 @@ import java.util.List;
         if (categoryRespository == null) {
             categoryRespository = new CategoryRepositoryImpl();
             categoryList = new ArrayList<>();
-            categoryList.add(new Category("Salary", false));
-            categoryList.add(new Category("Travel", false));
-            categoryList.add(new Category("Shopping", false));
+            categoryList.add(new Category("Salary", false, true));
+            categoryList.add(new Category("Travel", false, false));
+            categoryList.add(new Category("Shopping", false, false));
         }
         return categoryRespository;
     }
@@ -57,10 +57,10 @@ import java.util.List;
         return null;
     }
 
-    @Override public int create(String categoryName) throws BadRequestException {
+    @Override public int create(String categoryName, boolean isIncome) throws BadRequestException {
         try {
             if(findCategoryByName(categoryName) ==null) {
-                Category category = new Category(categoryName, true);
+                Category category = new Category(categoryName, true, isIncome);
                 categoryList.add(category);
                 return category.getCategoryId();
             } else {

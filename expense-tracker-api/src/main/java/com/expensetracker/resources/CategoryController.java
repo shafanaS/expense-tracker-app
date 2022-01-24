@@ -34,7 +34,7 @@ public class CategoryController {
     @PostMapping("/newCategory")
     public ResponseEntity<?> addCategory(@RequestBody Category category) {
         try {
-            int categoryId = categoryService.addCategory(category.getCategoryName());
+            int categoryId = categoryService.addCategory(category.getCategoryName(),category.isIncome());
             return new ResponseEntity<>(categoryId, HttpStatus.CREATED);
         } catch (BadRequestException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

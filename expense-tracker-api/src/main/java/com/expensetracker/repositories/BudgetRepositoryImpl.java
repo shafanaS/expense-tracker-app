@@ -66,22 +66,29 @@ public class BudgetRepositoryImpl implements BudgetRepository {
     private List<CategoryBudget> findCategoryBudgetsForCategory(List<Category> categoryList, List<Transaction> monthlyTransactions, String month, List<Budget> budgetList) {
         List<CategoryBudget> returnList = new ArrayList<>();
         for(Category category: categoryList) {
-            CategoryBudget categoryBudget = findCategoryBudgetForMonth(monthlyTransactions, category.getCategoryId(),budgetList, month);
+            CategoryBudget categoryBudget = findCategoryBudgetForMonth(monthlyTransactions, category, budgetList, month);
             returnList.add(categoryBudget);
         }
         return returnList;
     }
 
-    private CategoryBudget findCategoryBudgetForMonth(List<Transaction> transactionForMonth, int categoryId, List<Budget> budgetList, String month) {
+    private CategoryBudget findCategoryBudgetForMonth(List<Transaction> transactionForMonth, Category category, List<Budget> budgetList, String month) {
 
-        double totalSpent = findExpenseForCategory(transactionForMonth,categoryId);
-        String name = CategoryRepositoryImpl.categoryRespository.findById(categoryId).getCategoryName();
-        double budget = findBudgetForCategoryForMonth(categoryId, budgetList, month);
+        double sum = findSumForCategoryForMonth(transactionForMonth,category.getCategoryId());
+        double budget = findBudgetForCategoryForMonth(category.getCategoryId(), budgetList, month);
+
         CategoryBudget categoryBudget = new CategoryBudget();
-        categoryBudget.setCategoryId(categoryId);
-        categoryBudget.setSpent(totalSpent);
-        categoryBudget.setName(name);
+        categoryBudget.setCategoryId(category.getCategoryId());
+        categoryBudget.setIncome(category.isIncome());
+        categoryBudget.setName(category.getCategoryName());
         categoryBudget.setBudget(budget);
+        if(category.isIncome()) {
+            categoryBudget.setEarned(sum);
+            categoryBudget.setSpent(0);
+        } else {
+            categoryBudget.setSpent(sum);
+            categoryBudget.setEarned(0);
+        }
         return categoryBudget;
     }
 
@@ -94,14 +101,14 @@ public class BudgetRepositoryImpl implements BudgetRepository {
         return 0;
     }
 
-    private double findExpenseForCategory(List<Transaction> transactionForMonth, int categoryId) {
-        double totalSpent = 0;
+    private double findSumForCategoryForMonth(List<Transaction> transactionForMonth, int categoryId) {
+        double sum = 0;
         for (Transaction transaction : transactionForMonth) {
             if (transaction.getCategoryId() == categoryId) {
-                totalSpent = totalSpent + transaction.getAmount();
+                sum =sum + transaction.getAmount();
             }
         }
-        return totalSpent;
+        return sum;
     }
 
     private double calculateTotal(double amount, Transaction transaction) {

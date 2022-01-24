@@ -12,7 +12,7 @@ public interface CategoryRepository {
 
     Category findById(int categoryId) throws ResourceNotFoundException;
 
-    int create(String categoryName) throws BadRequestException;
+    int create(String categoryName, boolean isIncome) throws BadRequestException;
 
     void update(int categoryId, Category category) throws BadRequestException;
 

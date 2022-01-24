@@ -26,8 +26,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public int addCategory(String categoryName) throws BadRequestException {
-        return  categoryRepository.create(categoryName);
+    public int addCategory(String categoryName, boolean isIncome) throws BadRequestException {
+        return  categoryRepository.create(categoryName, isIncome);
     }
 
     @Override public void updateCategory(int categoryId, Category category) throws BadRequestException {

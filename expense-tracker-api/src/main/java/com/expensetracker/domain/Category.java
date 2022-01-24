@@ -10,11 +10,14 @@ public class Category {
     private String categoryName;
     @JsonProperty("isCustom")
     private boolean isCustom;
+    @JsonProperty("isIncome")
+    private boolean isIncome;
 
-    public Category(String categoryName, boolean isCustom ) {
+    public Category(String categoryName, boolean isCustom, boolean isIncome ) {
         this.categoryId = Util.createID(CategoryRepositoryImpl.categoryIdCounter);
         this.categoryName = categoryName;
         this.isCustom = isCustom;
+        this.isIncome = isIncome;
         CategoryRepositoryImpl.categoryIdCounter = categoryId;
     }
 
@@ -22,7 +25,7 @@ public class Category {
         return categoryId;
     }
 
-    public void setCategoryId(Integer categoryId) {
+    public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
     }
 
@@ -40,5 +43,13 @@ public class Category {
 
     public void setCustom(boolean custom) {
         isCustom = custom;
+    }
+
+    public boolean isIncome() {
+        return isIncome;
+    }
+
+    public void setIncome(boolean income) {
+        isIncome = income;
     }
 }
