@@ -94,7 +94,7 @@ public class BudgetRepositoryImpl implements BudgetRepository {
 
     private double findBudgetForCategoryForMonth(int categoryId, List<Budget> budgetList, String month) {
         for(Budget budget: budgetList) {
-            if(budget.getCategoryId() == categoryId && budget.getMonth().equalsIgnoreCase(month)) {
+            if(budget.getCategoryId() == categoryId && month.equalsIgnoreCase(budget.getMonth())) {
                 return budget.getBudget();
             }
         }
@@ -118,7 +118,7 @@ public class BudgetRepositoryImpl implements BudgetRepository {
     private List<Transaction> filterTransactionsByMonth(List<Transaction> transactionList, String month) {
         List<Transaction> returnList = new ArrayList<>();
         for(Transaction transaction: transactionList) {
-            if(transaction.getMonth().equalsIgnoreCase(month)) {
+            if(month.equalsIgnoreCase(transaction.getMonth())) {
                 returnList.add(transaction);
             }
         }
@@ -148,7 +148,7 @@ public class BudgetRepositoryImpl implements BudgetRepository {
     private double findTotalBudget(String month) {
         double amount = 0;
         for(Budget budget: BudgetRepositoryImpl.budgetRespository.findAll()) {
-            if (budget.getMonth().equalsIgnoreCase(month)) {
+            if (month.equalsIgnoreCase(budget.getMonth())) {
                 amount = amount + budget.getBudget();
             }
         }
