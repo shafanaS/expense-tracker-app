@@ -4,7 +4,6 @@ import com.expensetracker.domain.Category;
 import com.expensetracker.exceptions.BadRequestException;
 import com.expensetracker.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Repository;
-import sun.util.resources.cldr.tg.CalendarData_tg_Cyrl_TJ;
 
 import java.util.ArrayList;
 import java.util.List;

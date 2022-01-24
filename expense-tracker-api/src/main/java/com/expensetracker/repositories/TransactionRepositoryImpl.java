@@ -1,6 +1,5 @@
 package com.expensetracker.repositories;
 
-import com.expensetracker.domain.Category;
 import com.expensetracker.domain.Transaction;
 import com.expensetracker.exceptions.BadRequestException;
 import com.expensetracker.exceptions.ResourceNotFoundException;
@@ -43,14 +42,16 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     }
 
     @Override public Transaction findById(int transactionId) throws ResourceNotFoundException {
+        Transaction returnTransaction = null;
         for(Transaction transaction: transactionList) {
             if(transaction.getTransactionId() == transactionId) {
-                return transaction;
-            } else {
-                throw new ResourceNotFoundException("Transaction not found");
+                returnTransaction = transaction;
             }
         }
-        return null;
+        if(returnTransaction == null) {
+            throw new ResourceNotFoundException("Transaction Not found");
+        }
+        return returnTransaction;
     }
 
     @Override

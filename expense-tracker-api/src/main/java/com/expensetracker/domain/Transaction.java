@@ -2,6 +2,7 @@ package com.expensetracker.domain;
 
 import com.expensetracker.repositories.TransactionRepositoryImpl;
 import com.expensetracker.util.Util;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Transaction {
 
@@ -9,6 +10,7 @@ public class Transaction {
     private double amount;
     private int categoryId;
     private String month;
+    @JsonProperty("isIncome")
     private boolean isIncome;
     private String description;
 
