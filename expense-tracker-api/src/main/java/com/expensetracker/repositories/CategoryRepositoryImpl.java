@@ -46,11 +46,26 @@ import java.util.List;
         return returnCategory;
     }
 
+    private Category findCategoryByName(String categoryName) {
+        for(Category c: categoryList) {
+            if(c.getCategoryName().equalsIgnoreCase(categoryName)) {
+                return c;
+            } else {
+                continue;
+            }
+        }
+        return null;
+    }
+
     @Override public int create(String categoryName) throws BadRequestException {
         try {
-            Category category = new Category(categoryName, true);
-            categoryList.add(category);
-            return category.getCategoryId();
+            if(findCategoryByName(categoryName) ==null) {
+                Category category = new Category(categoryName, true);
+                categoryList.add(category);
+                return category.getCategoryId();
+            } else {
+                throw new BadRequestException("Category already exists.");
+            }
         } catch (Exception e) {
             throw new BadRequestException("Invalid request");
         }
